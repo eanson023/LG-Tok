@@ -1,6 +1,23 @@
 # Language-Guided Transformer Tokenizer for Human Motion Generation
 
+<div align="center">
+
+[![arXiv](https://img.shields.io/badge/arXiv-2602.08337-b31b1b.svg)](https://www.arxiv.org/abs/2602.08337)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://eanson023.github.io/LG-Tok)
+[![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.2.0-EE4C2C?logo=pytorch)](https://pytorch.org/)
+
+</div>
+
 This repository contains the official implementation of **LG-Tok**, a language-guided tokenizer for efficient text-driven human motion generation.
+
+## 📰 News
+
+- **[2026-02]** 🎉 Training code, inference code, and pretrained model weights are now fully released!
+
+## 📝 TODO
+
+- [ ] Release motion editing code
 
 ## Preparation
 
@@ -38,7 +55,7 @@ python -m spacy download en_core_web_sm
 
 LG-Tok achieves efficient generation through language-guided tokenization. We use **LLaMA-3.2-1B** as the language encoder during the tokenization stage. 
 
-Please visit https://huggingface.co/meta-llama/Llama-3.2-1B to fill out the form and request model access. After receiving Meta's approval, run:
+Please visit https://huggingface.co/meta-llama/Llama-3.2-1B to fill out the form and request model access. After receiving approval from Meta, run:
 
 ```bash
 mkdir deps
@@ -192,6 +209,12 @@ python eval_tok.py --name trans_tok_mosa_Llama-3.2-1B_rope1d_base100_enc_ctx_ctx
 ```
 
 ### 🎯 Generation
+
+LG-Tok aligns natural language with motion at the tokenization stage, producing compact semantic representations. With our Transformer-based architecture and language-drop scheme, LG-Tok achieves superior performance while using significantly fewer tokens.
+
+<div align="center">
+<img src="assets/table1.png" alt="Generation Results" width="90%">
+</div>
 
 Run the following commands for evaluation:
 

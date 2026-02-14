@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Language-Guided Transformer Tokenizer for Human Motion Generation">
+  <meta name="keywords" content="LG-Tok, Motion Generation, Text-to-Motion, Tokenizer, Transformer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language-Guided Transformer Tokenizer for Human Motion Generation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.ico">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-widescreen">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-3 publication-title">Language-Guided Transformer Tokenizer for Human Motion
+              Generation
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://github.com/eanson023" target="_blank">Sheng Yan</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="mailto:ywang@cqut.edu.cn">Yong Wang</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="mailto:deante@stu.cqut.edu.cn">Xin Du</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=fJ7seq0AAAAJ&hl=zh-CN" target="_blank">Junsong
+                  Yuan</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=woX_4AcAAAAJ&hl=zh-CN&oi=sra"
+                  target="_blank">Mengyuan Liu</a><sup>4 *</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors" style="margin-top: 10px;">
+              <span class="author-block" style="margin: 0 15px;"><sup>1</sup>Transsion Ltd.</span>
+              <span class="author-block" style="margin: 0 15px;"><sup>2</sup>Chongqing University of Technology</span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block" style="margin: 0 15px;"><sup>3</sup>State University of New York at
+                Buffalo</span>
+              <span class="author-block" style="margin: 0 15px;"><sup>4</sup>Peking University</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- arXiv Link. -->
+                <span class="link-block">
+                  <a href="https://www.arxiv.org/abs/2602.08337"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/eanson023/LG-Tok"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <p>
+              In this paper, we focus on motion discrete tokenization, which converts raw motion into compact discrete
+              tokens—a process proven crucial for efficient motion generation. In this paradigm, increasing the number
+              of tokens is a common approach to improving motion reconstruction quality, but more tokens make it more
+              difficult for generative models to learn.
+              To maintain high reconstruction quality while reducing generation complexity, we propose leveraging
+              language to achieve efficient motion tokenization, which we term Language-Guided Tokenization (LG-Tok).
+              LG-Tok aligns natural language with motion at the tokenization stage, yielding compact, high-level
+              semantic representations. This approach not only strengthens both tokenization and detokenization but also
+              simplifies the learning of generative models. Furthermore, existing tokenizers predominantly adopt
+              convolutional architectures, whose local receptive fields struggle to support global language guidance. To
+              this end, we propose a Transformer-based Tokenizer that leverages attention mechanisms to enable effective
+              alignment between language and motion.
+              Additionally, we design a language-drop scheme, in which language conditions are randomly removed during
+              training, enabling the detokenizer to support language-free guidance during generation. On the HumanML3D
+              and Motion-X generation benchmarks, LG-Tok achieves Top-1 scores of 0.542 and 0.582, outperforming
+              state-of-the-art methods (MARDM: 0.500 and 0.528), and with FID scores of 0.057 and 0.088, respectively,
+              versus 0.114 and 0.147. LG-Tok-mini uses only half the tokens while maintaining competitive performance
+              (Top-1: 0.521/0.588, FID: 0.085/0.071), validating the efficiency of our semantic representations.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+
+  <!-- Method Overview -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Method Overview</h2>
+
+      <!-- LG-Tok Model Architecture -->
+      <div class="columns is-vcentered" style="margin-top: 30px; column-gap: 2.5rem;">
+        <div class="column is-7">
+          <div class="method-description-box">
+            <div class="method-description-title">
+              <span class="step-number">1</span> 📋 LG-Tok Architecture Description
+            </div>
+            <p>
+              Given motion and text, a frozen text encoder extracts embeddings which are fed into a Transformer-based
+              tokenizer with learnable latent tokens to produce semantic motion tokens. These are quantized into
+              discrete
+              codes for generative modeling. During detokenization, dequantized embeddings and text interact via
+              cross-attention in the detokenizer to reconstruct motion. For generation, tokens from the trained model
+              are decoded to synthesize high-fidelity human motion.
+            </p>
+          </div>
+        </div>
+        <div class="column is-5">
+          <div class="method-image-container">
+            <img src="./static/images/lg-tok.jpg" alt="LG-Tok Model Architecture"
+              style="max-width: 90%; height: auto; display: block; margin: 0 auto;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Complete Pipeline -->
+      <div class="columns is-vcentered" style="margin-top: 50px; column-gap: 2.5rem;">
+        <div class="column is-7">
+          <div class="pipeline-image-box">
+            <img src="./static/images/whole_pipeline.jpg" alt="Complete Pipeline" />
+          </div>
+        </div>
+        <div class="column is-5">
+          <div class="pipeline-description-box">
+            <div class="pipeline-title">
+              <span class="step-number">2</span> 🔄 Complete Pipeline
+            </div>
+            <p>
+              The complete tokenization-generation-detokenization pipeline follows: LG-Tok first tokenizes motion into
+              multi-scale discrete tokens through language-guided encoding and multi-scale quantization. These tokens
+              then enable Scalable AutoRegressive (SAR) modeling, which predicts tokens scale-by-scale rather than
+              one-by-one, significantly improving generation efficiency. Finally, the generated tokens are dequantized
+              and decoded back to motion through our Transformer-based detokenizer with language guidance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experimental Results -->
+  <section class="section" style="background-color: #f5f5f5;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Experimental Results</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              We evaluate our approach on HumanML3D and Motion-X datasets. LG-Tok achieves superior performance with
+              Top-1 R-Precision of <strong>0.542</strong> and FID of <strong>0.057</strong> on HumanML3D, surpassing the
+              previous best method MoSa (0.518 and 0.064). On Motion-X, LG-Tok-mid reaches <strong>0.591</strong> Top-1
+              R-Precision. Notably, LG-Tok-mini maintains competitive results with only half the tokens (0.521 Top-1
+              R-Precision), validating the efficiency of our language-guided semantic representations.
+            </p>
+          </div>
+
+          <div class="content has-text-centered">
+            <img src="./static/images/table1.png" alt="Experimental Results" style="max-width: 100%; height: auto;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparisons -->
+  <section class="section comparisons-section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Comparisons</h2>
+
+      <!-- Comparison 1 -->
+      <div class="columns is-centered" style="margin-bottom: 30px;">
+        <div class="column is-full-width">
+          <h3 class="title is-5 has-text-centered"><em>a person walks to the left, then to the right, then back to their
+              original position in the middle</em></h3>
+          <div class="columns is-multiline">
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks to the left, then to the right, then back to their original position in the middle/StableMoFusion.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>StableMoFusion</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks to the left, then to the right, then back to their original position in the middle/MARDM.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MARDM</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks to the left, then to the right, then back to their original position in the middle/MoSa.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MoSa</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks to the left, then to the right, then back to their original position in the middle/LG-Tok.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>LG-Tok (Ours)</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison 2 -->
+      <div class="columns is-centered" style="margin-bottom: 30px;">
+        <div class="column is-full-width">
+          <h3 class="title is-5 has-text-centered"><em>The boxer dodges quickly, shifting their weight from side to
+              side</em>
+          </h3>
+          <div class="columns is-multiline">
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/The boxer dodges quickly, shifting their weight from side to side/StableMoFusion.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>StableMoFusion</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/The boxer dodges quickly, shifting their weight from side to side/MARDM.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MARDM</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/The boxer dodges quickly, shifting their weight from side to side/MoSa.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MoSa</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/The boxer dodges quickly, shifting their weight from side to side/LG-Tok.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>LG-Tok (Ours)</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison 3 -->
+      <div class="columns is-centered" style="margin-bottom: 30px;">
+        <div class="column is-full-width">
+          <h3 class="title is-5 has-text-centered"><em>a person walks a few steps forward and then starts dancing as if
+              with
+              a partner and then turns to the right</em></h3>
+          <div class="columns is-multiline">
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks a few steps forward and then starts dancing as if with a partner and then turns to the right/StableMoFusion.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>StableMoFusion</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks a few steps forward and then starts dancing as if with a partner and then turns to the right/MARDM.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MARDM</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks a few steps forward and then starts dancing as if with a partner and then turns to the right/MoSa.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>MoSa</strong></p>
+              </div>
+            </div>
+            <div class="column is-6">
+              <div class="content has-text-centered">
+                <video autoplay controls muted loop playsinline height="100%">
+                  <source
+                    src="./static/videos/competitors_comparison/a person walks a few steps forward and then starts dancing as if with a partner and then turns to the right/LG-Tok.mp4"
+                    type="video/mp4">
+                </video>
+                <p><strong>LG-Tok (Ours)</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery of Generation -->
+  <section class="section" style="background-color: #f5f5f5;">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Gallery of Generation</h2>
+      <div class="hero-body">
+        <div class="container">
+          <div id="results-carousel" class="carousel results-carousel">
+            <div class="item">
+              <video poster="" autoplay controls muted loop playsinline height="100%">
+                <source
+                  src="./static/videos/more_results/a man turns to his left, then goes down onto a crawl, moving around on his hands and feet.mp4"
+                  type="video/mp4">
+              </video>
+              <p class="has-text-centered"><em>a man turns to his left, then goes down onto a crawl, moving around on
+                  his hands and feet</em></p>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop playsinline height="100%">
+                <source
+                  src="./static/videos/more_results/a person quickly runs forward and stoops to pick up an object before carrying it off.mp4"
+                  type="video/mp4">
+              </video>
+              <p class="has-text-centered"><em>a person quickly runs forward and stoops to pick up an object before
+                  carrying it off</em></p>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop playsinline height="100%">
+                <source
+                  src="./static/videos/more_results/a person takes one step forward with their right foot and then with their left to end with their feet side by side.mp4"
+                  type="video/mp4">
+              </video>
+              <p class="has-text-centered"><em>a person takes one step forward with their right foot and then with their
+                  left to end with their feet side by side</em></p>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop playsinline height="100%">
+                <source
+                  src="./static/videos/more_results/the person is balancing on one leg using his hands to help balance.mp4"
+                  type="video/mp4">
+              </video>
+              <p class="has-text-centered"><em>the person is balancing on one leg using his hands to help balance</em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Motion Editing -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Apply in Motion Editing</h2>
+
+          <div class="notification is-warning is-light" style="margin: 20px 0;">
+            <p class="title is-5">🚧 Coming Soon! 🚧</p>
+          </div>
+
+          <div class="content has-text-justified">
+            <p>
+              We provide motion editing results to demonstrate that LG-Tok's benefits extend beyond standard generation
+              to constrained tasks. Following protocols in generative models, we pass an edit mask during
+              <em>detokenization</em> to enable language guidance only in designated regions. This allows precise
+              temporal control for partial generation tasks such as motion editing and in-betweening.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>
+</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://www.arxiv.org/abs/2602.08337">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/eanson023/LG-Tok" class="external-link">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

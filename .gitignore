@@ -17,6 +17,4 @@ rec_vq/
 user_study/
 pretrained_models/
 .idea/
-*.mp4
-*.png
 deps/

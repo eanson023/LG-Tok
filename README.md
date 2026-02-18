@@ -323,6 +323,11 @@ We stand on the shoulders of giants. Thanks to the following open-source reposit
 If you find this work useful, please consider citing:
 
 ```bibtex
-
+@article{yan2026language,
+  title={Language-Guided Transformer Tokenizer for Human Motion Generation},
+  author={Yan, Sheng and Wang, Yong and Du, Xin and Yuan, Junsong and Liu, Mengyuan},
+  journal={arXiv preprint arXiv:2602.08337},
+  year={2026}
+}
 ```
 

@@ -75,7 +75,8 @@ def load_vq_model():
     missing_keys, unexpected_keys = vq_model.load_state_dict(ckpt[model_key], strict=False)
     assert len(unexpected_keys) == 0
     assert all([k.startswith('text_model.') for k in missing_keys])
-    print(f'Loading VQ Model {opt.vq_name}')
+    vq_epoch = ckpt['ep'] if 'ep' in ckpt else -1
+    print(f'Loading VQ Model {opt.vq_name}, epoch={vq_epoch}')
     return vq_model, vq_opt
 
 if __name__ == '__main__':
@@ -114,7 +115,7 @@ if __name__ == '__main__':
         opt.joints_num = 21
         radius = 240 * 8
         fps = 12.5
-        dim_pose = 63
+        dim_pose = 64
         opt.max_motion_len = 55
         kinematic_chain = kit_kinematic_chain
         dataset_opt_path = './checkpoints/kit/Comp_v6_KLD005/opt.txt'

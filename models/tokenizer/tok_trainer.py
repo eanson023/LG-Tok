@@ -90,10 +90,10 @@ class VQTokenizerTrainer:
     def resume(self, model_dir):
         checkpoint = torch.load(model_dir, map_location=self.device)
         missing_keys, unexpected_keys = self.vq_model.load_state_dict(checkpoint['vq_model'], strict=False)
-        assert len(unexpected_keys) == 0
+        assert len(unexpected_keys) == 0, unexpected_keys
         assert all([k.startswith('text_model.') for k in missing_keys])
         self.opt_vq_model.load_state_dict(checkpoint['opt_vq_model'])
-        self.scheduler.load_state_dict(checkpoint['scheduler'])
+        # self.scheduler.load_state_dict(checkpoint['scheduler'])
         self.scaler.load_state_dict(checkpoint["scaler"])
         
         return checkpoint['ep'], checkpoint['total_it']

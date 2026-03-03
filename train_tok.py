@@ -75,7 +75,7 @@ if __name__ == "__main__":
         opt.min_motion_len = 24
         radius = 240 * 8
         fps = 12.5
-        dim_pose = 251
+        dim_pose = 64
         opt.max_motion_length = 196
         kinematic_chain = paramUtil.kit_kinematic_chain
         dataset_opt_path = './checkpoints/kit/Comp_v6_KLD005/opt.txt'

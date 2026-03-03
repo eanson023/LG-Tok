@@ -54,7 +54,9 @@ def load_vq_model(vq_opt):
     missing_keys, unexpected_keys = vq_model.load_state_dict(ckpt[model_key], strict=False)
     assert len(unexpected_keys) == 0
     assert all([k.startswith('text_model.') for k in missing_keys])
-    print(f'Loading VQ Model {vq_opt.name} Completed!')
+    vq_epoch = ckpt['ep'] if 'ep' in ckpt else -1
+    vq_epoch = ckpt['total_it'] if 'total_it' in ckpt and vq_epoch==-1 else vq_epoch
+    print(f'Loading VQ Model {vq_opt.name} Completed!, Epoch {vq_epoch}')
     return vq_model, vq_opt
 
 def load_trans_model(model_opt, which_model):
@@ -143,7 +145,7 @@ if __name__ == '__main__':
     opt.device = torch.device("cpu" if opt.gpu_id == -1 else "cuda:" + str(opt.gpu_id))
     torch.autograd.set_detect_anomaly(True)
 
-    dim_pose = 63 if opt.dataset_name == 'kit' else 67
+    dim_pose = 64 if opt.dataset_name == 'kit' else 67
 
     # out_dir = pjoin(opt.check)
     root_dir = pjoin(opt.checkpoints_dir, opt.dataset_name, opt.name)
@@ -168,6 +170,7 @@ if __name__ == '__main__':
         model_opt.res_name = opt.res_name
 
     if opt.dataset_name == 'kit':
+        data_root = './dataset/KIT-ML'
         dataset_opt_path = 'checkpoints/kit/Comp_v6_KLD005/opt.txt'
     elif opt.dataset_name == 't2m':
         data_root = './dataset/HumanML3D'

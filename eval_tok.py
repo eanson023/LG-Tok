@@ -49,9 +49,10 @@ def load_vq_model(vq_opt, which_epoch):
     # exclude text_model parameters
     ckpt[model_key] = {k: v for k, v in ckpt[model_key].items() if not k.startswith('text_model.')}
     missing_keys, unexpected_keys = vq_model.load_state_dict(ckpt[model_key], strict=False)
-    assert len(unexpected_keys) == 0
+    assert len(unexpected_keys) == 0, unexpected_keys
     assert all([k.startswith('text_model.') for k in missing_keys])
     vq_epoch = ckpt['ep'] if 'ep' in ckpt else -1
+    vq_epoch = ckpt['total_it'] if 'total_it' in ckpt else vq_epoch
     print(f'Loading VQ Model {vq_opt.name} Completed!, Epoch {vq_epoch}')
     return vq_model, vq_epoch
 
@@ -70,6 +71,7 @@ if __name__ == "__main__":
 
     if args.dataset_name == 'kit':
         dataset_opt_path = 'checkpoints/kit/Comp_v6_KLD005/opt.txt'
+        data_root = './dataset/KIT-ML'
     elif args.dataset_name == 't2m':
         dataset_opt_path = 'checkpoints/t2m/Comp_v6_KLD005/opt.txt'
         data_root = './dataset/HumanML3D'
@@ -89,7 +91,7 @@ if __name__ == "__main__":
 
     ##### ---- Dataloader ---- #####
     args.nb_joints = 21 if args.dataset_name == 'kit' else 22
-    dim_pose = 63 if args.dataset_name == 'kit' else 67
+    dim_pose = 64 if args.dataset_name == 'kit' else 67
     
 
     eval_val_loader, _ = get_dataset_motion_loader(dataset_opt_path, 32, 'test', device=args.device)

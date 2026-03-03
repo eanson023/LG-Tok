@@ -33,13 +33,13 @@ def mean_variance(data_dir, save_dir, joints_num):
 
 
 if __name__ == '__main__':
-    # data_dir1 = 'datasets/HumanML3D/new_joint_vecs/'
-    # save_dir1 = 'datasets/HumanML3D/'
-    # mean, std = mean_variance(data_dir1, save_dir1, 22)
+    data_dir1 = 'dataset/HumanML3D/new_joint_vecs/'
+    save_dir1 = 'dataset/HumanML3D/'
+    mean, std = mean_variance(data_dir1, save_dir1, 22)
 
-    # data_dir2 = 'datasets/KIT-ML/new_joint_vecs/'
-    # save_dir2 = 'datasets/KIT-ML/'
-    # mean2, std2 = mean_variance(data_dir2, save_dir2, 21)
+    data_dir2 = 'dataset/KIT-ML/new_joint_vecs/'
+    save_dir2 = 'dataset/KIT-ML/'
+    mean2, std2 = mean_variance(data_dir2, save_dir2, 21)
 
     # data_dir3 = 'dataset/CMP/new_joint_vecs/'
     # save_dir3 = 'dataset/CMP/'

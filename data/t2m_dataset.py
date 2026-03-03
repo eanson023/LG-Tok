@@ -139,7 +139,8 @@ class Text2MotionDatasetEval(data.Dataset):
         self.max_length = 20
         self.pointer = 0
         self.max_motion_length = opt.max_motion_length
-        self.nlp = spacy.load('en_core_web_sm')
+        if self.opt.dataset_name == "motionx":
+            self.nlp = spacy.load('en_core_web_sm')
         min_motion_len = 40 if self.opt.dataset_name in ['t2m', 'motionx', 'cmp'] else 24
 
         data_dict = {}

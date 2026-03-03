@@ -13,11 +13,13 @@ This repository contains the official implementation of **LG-Tok**, a language-g
 
 ## 📰 News
 
+- **[2026-03]** 🎉 Added support for the KIT-ML dataset!
 - **[2026-02]** 🎉 Training code, inference code, and pretrained model weights are now fully released!
 
 ## 📝 TODO
 
 - [ ] Release motion editing code
+- [ ] Upload pretrained checkpoints for KIT-ML
 
 ## Preparation
 
@@ -114,6 +116,8 @@ gdown --fuzzy https://drive.google.com/file/d/1JnoSLRuepnWOqA8q6dG1ZoVUs3QuH1SE/
 echo -e "Unzipping Motion-X pretrained models (LG-Tok and the SAR Model)"
 unzip pretrained_models_motionx.zip
 
+# TODO: Add pretrained checkpoints download for KIT-ML
+
 rm pretrained_models_t2m.zip
 rm pretrained_models_motionx.zip
 
@@ -125,6 +129,10 @@ cd ../../
 #### HumanML3D
 
 Please visit https://github.com/EricGuo5513/HumanML3D and follow the instructions to prepare the dataset. Finally, create a symbolic link to the `./dataset` folder.
+
+#### KIT-ML
+
+Please download the dataset from [Google Drive](https://drive.google.com/drive/folders/1D3bf2G2o4Hv-Ale26YW18r1Wrh7oIAwK?usp=sharing), and place it in the `./dataset/KIT-ML` folder.
 
 #### Motion-X
 
@@ -150,7 +158,7 @@ python demo.py --name t2m_pkeep_rope_ffsize768_bs64_milestone100_200_trans_tok_v
   --repeat_times 10 \
   --motion_length 196 \
   --gpu_id 0 \
-  --dataset_name t2m \
+  --dataset t2m \
   --tfg 2.0
 ```
 
@@ -162,7 +170,7 @@ python demo.py --name t2m_pkeep_rope_ffsize768_bs64_milestone100_200_trans_tok_4
   --repeat_times 10 \
   --motion_length 196 \
   --gpu_id 0 \
-  --dataset_name motionx \
+  --dataset motionx \
   --cond_scale 2 \
   --tfg 1
 ```
@@ -170,7 +178,7 @@ python demo.py --name t2m_pkeep_rope_ffsize768_bs64_milestone100_200_trans_tok_4
 ### Key Parameters:
 
 - `cond_scale`: Classifier-Free Guidance (CFG) in the generative model. Optimal values: 4.0 for HumanML3D, 2.0 for Motion-X.
-- `tfg`: Language-Free Decoding in the detokenizer (hyperparameter for the language-drop scheme mentioned in Section 3.4 of the paper). Optimal values: 2.0 for HumanML3D, 1.0 for Motion-X.
+- `tfg`: Language guidance scale $g$ in our paper (Language-Free Decoding in the detokenizer). Optimal values: 2.0 for HumanML3D, 1.0 for Motion-X, 2.0 for KIT-ML.
 
 You can also adjust `--top_p`, `--top_k`, and `--temperature` parameters for sampling.
 
@@ -208,6 +216,15 @@ python eval_tok.py --name trans_tok_mosa_Llama-3.2-1B_rope1d_base100_enc_ctx_ctx
   --which_epoch fid
 ```
 
+**KIT-ML:**
+
+```bash
+python eval_tok.py --name lg-tok-wo-lang-drop \
+  --which_epoch fid \
+  --gpu_id 0 \
+  --dataset kit
+```
+
 ### 🎯 Generation
 
 LG-Tok aligns natural language with motion at the tokenization stage, producing compact semantic representations. With our Transformer-based architecture and language-drop scheme, LG-Tok achieves superior performance while using significantly fewer tokens.
@@ -238,6 +255,17 @@ python eval_t2m.py --name t2m_pkeep_rope_ffsize768_bs64_milestone100_200_trans_t
   --gpu_id 0
 ```
 
+**KIT-ML:**
+
+```bash
+python eval_t2m.py --name gen-model \
+  --dataset kit \
+  --which_epoch fid \
+  --gpu_id 0 \
+  --cond_scale 2 \
+  --tfg 2.0
+```
+
 ## 🚀 Training Your Own Model
 
 ### 💾 Pre-compute Text Embeddings [Optional]
@@ -259,7 +287,7 @@ python prepare/prepare_text_embeddings.py \
 python train_tok.py --name lg-tok \
   --gpu_id 0 \
   --batch_size 128 \
-  --dataset_name t2m \
+  --dataset t2m \
   --using_znorm \
   --eval_every_i 2000 \
   --unit_length 8 \
@@ -273,7 +301,22 @@ python train_tok.py --name lg-tok \
 python train_tok.py --name lg-tok \
   --gpu_id 0 \
   --batch_size 128 \
-  --dataset_name motionx \
+  --dataset motionx \
+  --using_znorm \
+  --eval_every_i 2000 \
+  --unit_length 8 \
+  --text_model Llama-3.2-1B \
+  --text_max_len 77
+```
+
+
+**KIT-ML:**
+
+```bash
+python train_tok.py --name lg-tok \
+  --gpu_id 0 \
+  --batch_size 128 \
+  --dataset kit \
   --using_znorm \
   --eval_every_i 2000 \
   --unit_length 8 \
@@ -287,7 +330,7 @@ python train_tok.py --name lg-tok \
 
 ```bash
 python train_t2m.py --vq_name lg-tok \
-  --dataset_name t2m \
+  --dataset t2m \
   --name gen-model \
   --gpu_id 0 \
   --batch_size 64 \
@@ -299,7 +342,19 @@ python train_t2m.py --vq_name lg-tok \
 
 ```bash
 python train_t2m.py --vq_name lg-tok \
-  --dataset_name motionx \
+  --dataset motionx \
+  --name gen-model \
+  --gpu_id 0 \
+  --batch_size 64 \
+  --ff_size 768 \
+  --milestones 100 200
+```
+
+**KIT-ML:**
+
+```bash
+python train_t2m.py --vq_name lg-tok \
+  --dataset kit \
   --name gen-model \
   --gpu_id 0 \
   --batch_size 64 \

@@ -46,8 +46,8 @@ def arg_parse(is_train=False):
 
     # motion/text classifier-free guidance
     parser.add_argument("--cond_drop_prob", type=float, default=0.1, help="Condition dropout probability for motion text-free guidance")
-    parser.add_argument("--mae_motion_drop", type=float, default=0.4, help="Minimum motion token dropout ratio for motion masked autoencoding")
-    parser.add_argument("--mae_motion_drop_max", type=float, default=0.6, help="Maximum motion token dropout ratio for motion masked autoencoding")
+    parser.add_argument("--mae_motion_drop", type=float, default=0.0, help="Minimum motion token dropout ratio for motion masked autoencoding")
+    parser.add_argument("--mae_motion_drop_max", type=float, default=0.0, help="Maximum motion token dropout ratio for motion masked autoencoding")
     parser.add_argument("--tfg", type=float, default=1.0, help="Text-free guidance scale")
     parser.add_argument("--mfg", type=float, default=1.0, help="Motion-free guidance scale")
 
